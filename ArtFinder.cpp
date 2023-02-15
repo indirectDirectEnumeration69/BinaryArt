@@ -237,6 +237,22 @@ void InstructionLogicCall() {
 	GetSystemTime(&systemTime);
 	Kern(&systemTime); //load in the dlls and get the handle based on the system time
 }
+
+
+struct boolcheck {
+	bool duplicationcheck = false;
+	bool finished = false;
+
+
+	//on call of the struct reset to false not needed tho for now.
+	/*
+	boolcheck() {
+		duplicationcheck = false;
+		finished = false;
+	}
+	*/
+};
+boolcheck* boolchecks = new boolcheck();
 void instructionSetCheck() {
 	struct instructionMaker { //time complexity issue but its needed for now.
 								//*stackoverflow bug needing to fix that for anyexcessive duplicates.
@@ -260,6 +276,7 @@ void instructionSetCheck() {
 			for (auto i = instructionCheck.begin(); i != instructionCheck.end(); ++i) {
 				if (instructionCheck.count(*i) > 1) {
 					isduplicated = true;
+					boolchecks->duplicationcheck = true;
 					instructionCheck.erase(i);
 					instructionCheck.insert(instruction());//may still emplace a duplicate :/
 					--i;
@@ -281,6 +298,7 @@ void instructionSetCheck() {
 			for (auto a = SetInstruction->begin(); a != SetInstruction->end(); ++a) {
 				for (auto b = a + 1; b != SetInstruction->end(); ++b) {
 					if (*a == *b) {
+						boolchecks->duplicationcheck = true;
 						b = SetInstruction->erase(b);
 						--b;
 					} 
@@ -289,15 +307,39 @@ void instructionSetCheck() {
 			for (auto c = SetInstruct->begin(); c != SetInstruct->end(); ++c) {
 				for (auto d = SetInstruction->begin(); d != SetInstruction->end(); ++d) {
 					if (*c == *d) {
+						boolchecks->duplicationcheck = true;
 						c = SetInstruction->erase(d);
 						--d;
 					}
 				};
 			}
+			//now the check has happened 
+			delete SetInstruct; //not needed anymore
+			delete SetInstruction; //not needed 
+			
+			//final instruction set
+			//idea 1 if we know the dup has occured through the bool flag maybe double check before anything else is to happen with the instruction set.
+			instructionA = *std::next(instructionCheck.begin(), 0);
+			instructionB = *std::next(instructionCheck.begin(), 1);
+			instructionC = *std::next(instructionCheck.begin(), 2);
+			instructionD = *std::next(instructionCheck.begin(), 3);
+			boolchecks->finished = true; //okay global is now confirmed to be true.
 		}
 	};
 }
 
+std::vector<unsigned char>* instructionCreation() {
+	instructionSetCheck(); //check if the instruction set is valid.
+		if (boolchecks->duplicationcheck != true && boolchecks->finished == true) {
+
+
+		}
+		else {
+
+		}
+//return a instruction vector next function will use the machine code and see if its logically runnable if it is continue the machine code devlopment
+//maybe also create a new machine code file however this is very suss.
+}
 
 
 int main() {
