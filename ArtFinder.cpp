@@ -129,15 +129,20 @@ void Kern(SYSTEMTIME* systemTime) {
 * Binary Instruction generation
 * 
 */
+/*
+further improvements to this function would be to add more instructions to the vector but dynamically.
+*/
+struct x86_newInstructionSet {
+	std::vector<std::vector<unsigned char>> x86_instructions = {
+	{0x90}, {0xC3}, {0x89, 0xD8}, {0xFF, 0xE3}, {0x50}, {0x5B},
+	{0x01, 0xD8}, {0x29, 0xD8}, {0x0F, 0xAF, 0xC3}, {0xF7, 0xFB} //9+new instruct addition through constructor call and maybe a functor .
+	};
+};
 std::vector<unsigned char> generate_instruction() {
 	std::mt19937 RandomPos(std::random_device{}());
 	std::uniform_int_distribution<int> dist(0, 9); //0-9
-	std::vector<std::vector<unsigned char>> x86_instructions = {
-	{0x90}, {0xC3}, {0x89, 0xD8}, {0xFF, 0xE3}, {0x50}, {0x5B},
-	{0x01, 0xD8}, {0x29, 0xD8}, {0x0F, 0xAF, 0xC3}, {0xF7, 0xFB} //9
-	};
 	int index = dist(RandomPos); //0-9 (rng value)	
-	return x86_instructions[index];
+	return x86_newInstructionSet().x86_instructions[index];
 }
 
 std::vector<unsigned char> generate_instructions(int count) {
@@ -175,6 +180,7 @@ Random Bin64x;
 std::vector<unsigned char> BInstructions = Bin64x.binaryx64();
 int binaryTestPointOne() {
 	if (BInstructions.empty()) {
+		BInstructions.~vector();
 		return 1;
 	}else return 0;
 }
@@ -203,6 +209,8 @@ std::vector<std::pair<unsigned char, unsigned char>> InstructionCheck() {
 		return InstructionsMap;
 	}
 	else {
+		delete &BInstructions;
+		delete &Bin64x;
 		return std::vector<std::pair<unsigned char, unsigned char>>();
 	}
 }
@@ -221,12 +229,83 @@ unsigned char instruction() {
 	std::mt19937 Random(std::random_device{}());
 	std::uniform_int_distribution<int> dist(0, 250);
 	int rando = dist(Random);
-	return instructionbyte[rando];
+	return instructionbyte[rando]; //return random instruction from0-250 index pos.
 }
 
-int main() {
+void InstructionLogicCall() {
 	SYSTEMTIME systemTime;
 	GetSystemTime(&systemTime);
-	Kern(&systemTime);
-	instruction();
+	Kern(&systemTime); //load in the dlls and get the handle based on the system time
 }
+void instructionSetCheck() {
+	struct instructionMaker { //time complexity issue but its needed for now.
+								//*stackoverflow bug needing to fix that for anyexcessive duplicates.
+		unsigned char instructionA;
+		unsigned char instructionB;
+		unsigned char instructionC;
+		unsigned char instructionD;
+		instructionMaker() {
+			instructionA = instruction();
+			instructionB = instruction();
+			instructionC = instruction();
+			instructionD = instruction();
+			std::unordered_set<unsigned char> instructionCheck;
+			instructionCheck.insert(instructionA);
+			instructionCheck.insert(instructionB);
+			instructionCheck.insert(instructionC);
+			instructionCheck.insert(instructionD);
+
+			//first check
+			bool isduplicated = false;
+			for (auto i = instructionCheck.begin(); i != instructionCheck.end(); ++i) {
+				if (instructionCheck.count(*i) > 1) {
+					isduplicated = true;
+					instructionCheck.erase(i);
+					instructionCheck.insert(instruction());//may still emplace a duplicate :/
+					--i;
+				}
+			}
+			if (isduplicated) {
+				instructionA = *instructionCheck.begin();
+				instructionB = *std::next(instructionCheck.begin(), 1);
+				instructionC = *std::next(instructionCheck.begin(), 2);
+				instructionD = *std::next(instructionCheck.begin(), 3);
+			}
+			//second check
+			std::vector<unsigned char>* SetInstruct = new std::vector<unsigned char>();
+			SetInstruct->push_back(instructionA);
+			SetInstruct->push_back(instructionB);
+			std::vector<unsigned char>* SetInstruction = new std::vector<unsigned char>(*SetInstruct);
+			SetInstruction->push_back(instructionC);
+			SetInstruction->push_back(instructionD);
+			for (auto a = SetInstruction->begin(); a != SetInstruction->end(); ++a) {
+				for (auto b = a + 1; b != SetInstruction->end(); ++b) {
+					if (*a == *b) {
+						b = SetInstruction->erase(b);
+						--b;
+					} 
+				}
+			}
+			for (auto c = SetInstruct->begin(); c != SetInstruct->end(); ++c) {
+				for (auto d = SetInstruction->begin(); d != SetInstruction->end(); ++d) {
+					if (*c == *d) {
+						c = SetInstruction->erase(d);
+						--d;
+					}
+				};
+			}
+		}
+	};
+}
+
+
+
+int main() {
+	instructionSetCheck();
+	InstructionLogicCall();
+	return 0;
+}
+/*
+TO DO MEMORY LEAKS.
+deconstruct unused data structs once they are no longer in use.
+*/
