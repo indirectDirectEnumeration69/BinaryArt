@@ -205,9 +205,9 @@ std::string ProcessBrand() {
 		if (is64arch == false) {
 
 		}
-			 //Still unfinhsed first draft\\
-			// RELATED TO x86 new instruction set
-			//Issues.ErrorOp(GetLastError());
+					 //Still unfinhsed first draft\\
+					// RELATED TO x86 new instruction set
+					//Issues.ErrorOp(GetLastError());
 		 		//				//
 	}//			||				||
 	//			\/				\/
