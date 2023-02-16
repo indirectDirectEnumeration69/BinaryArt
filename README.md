@@ -11,7 +11,10 @@ Priority:
 Next step after the functions are finished is to start adding thread concurrency including async and promises for certain thread tasks as 
 well as including safe gaurds through atomic fences,gaurds and locks
 for the prevention of race conditions in certain situations then deal with resource efficeny and process hogging(i.e allocate memory into other processes to run from.
-//other efficeny ideas :
+
+other efficeny ideas :
+-
+-
 
 
 suss prevention:
