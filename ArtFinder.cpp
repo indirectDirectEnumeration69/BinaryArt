@@ -208,9 +208,9 @@ std::string ProcessBrand() {
 					 //Still unfinhsed first draft\\
 					// RELATED TO x86 new instruction set
 					//Issues.ErrorOp(GetLastError());
-		 		//				//
-	}//			||				||
-	//			\/				\/
+		 		  //			//
+	}//			 ||				||
+	//			 \/				\/
 };			
 
 
