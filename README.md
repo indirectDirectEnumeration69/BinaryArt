@@ -1,9 +1,9 @@
 # BinaryArt
 BinaryArt unfinished but working as intended building onto the binary instruction execution now.
 
-Priority/*
-//Need to create functionality to determine architecture and the type of processor for the detrmination of binary encoding for each machine instruction.
-*/
+Priority:
+-Need to create functionality to determine architecture and the type of processor for the detrmination of binary encoding for each machine instruction.
+
 
 
 
@@ -15,8 +15,9 @@ for the prevention of race conditions in certain situations then deal with resou
 
 
 suss prevention:
-
-
+-
+-
+-
 
 once the logic is done the organisation of the code , modules and headers will start to come into play for a more efficent program , class's require alot of space so maybe keeping it procedural for now will keep the memory consumption low.
 
