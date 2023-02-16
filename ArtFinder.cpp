@@ -149,6 +149,7 @@ std::string ProcessBrand() {
 
 	return processorBrand;
 }
+//check for 32 or 64 bit arc
 	bool Is64Bit() {
 #if defined(_WIN64)
 		return true;
@@ -203,7 +204,9 @@ std::string ProcessBrand() {
 			}
 		}
 		if (is64arch == false) {
-
+			
+			
+			
 		}
 					 //Still unfinhsed first draft\\
 					// RELATED TO x86 new instruction set
@@ -213,7 +216,11 @@ std::string ProcessBrand() {
 	//			 \/				\/
 };			
 
+//now the x64 instruction set after the 32 bit so if the arch is running as a 32bit then machine code instructions used will be 32bit 
 
+
+
+//x86 32 bit instruction set
 struct x86_newInstructionSet {
 	std::vector<std::vector<unsigned char>> x86_instructions = {
 	{0x90}, {0xC3}, {0x89, 0xD8}, {0xFF, 0xE3}, {0x50}, {0x5B},
