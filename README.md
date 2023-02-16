@@ -8,7 +8,7 @@ Priority:
 
 
 
-Next step after the functions are finished is to start adding thread concurrency including async and promises for certain thread tasks as 
+- Next step after the functions are finished is to start adding thread concurrency including async and promises for certain thread tasks as 
 well as including safe gaurds through atomic fences,gaurds and locks
 for the prevention of race conditions in certain situations then deal with resource efficeny and process hogging(i.e allocate memory into other processes to run from.
 
@@ -21,8 +21,8 @@ suss prevention:
 -
 -
 -
-
-once the logic is done the organisation of the code , modules and headers will start to come into play for a more efficent program , class's require alot of space so maybe keeping it procedural for now will keep the memory consumption low.
+Note:
+- once the logic is done the organisation of the code , modules and headers will start to come into play for a more efficent program , class's require alot of space so maybe keeping it procedural for now will keep the memory consumption low.
 
 additional features for a later date :
 - finding os enviroments based on macro definition inclusions as well as certain files exisitig ie. dlls
