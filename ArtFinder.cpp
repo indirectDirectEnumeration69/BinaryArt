@@ -134,7 +134,7 @@ void Kern(SYSTEMTIME* systemTime) {
 further improvements to this function would be to add more instructions to the vector but dynamically.
 */
 struct SystemHardwareCheck{
-std::string ProcessBrand() {
+std::string ProcessBrandInfomation() {
 	int cpuInfo[4];
 	__cpuid(cpuInfo, 0);
 
@@ -179,12 +179,12 @@ std::string ProcessBrand() {
 		};
 	};
 	SystemHardwareCheck() {
-		std::string cpuBrand = ProcessBrand();
+		std::string cpuName = ProcessBrandInfomation();
 		std::string systemName = GetSystemName();
 		long long int systemMemoryRam = GetSystemMemory();
 		bool is64arch = Is64Bit();
 		SystemInternalErrors Issues;
-		if (cpuBrand.empty()) {
+		if (cpuName.empty()) {
 			Issues.ErrorOp(GetLastError());
 		}
 		if (systemName.empty()) {
