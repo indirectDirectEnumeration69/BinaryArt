@@ -9,6 +9,16 @@
 #include <random>
 #include <set>
 #include <intrin.h>
+#include <atomic>
+#include <mutex>
+
+namespace ThreadManagement {
+	std::unordered_set<std::thread> threadsTotal;
+	std::unordered_map<std::thread::id, std::string> threadIds;
+	std::mutex Mutex;
+	std::unordered_multimap<std::thread::id, std::atomic<std::thread>> multiplethreadOccurances;
+}
+
 struct KernIssues {
 	std::unordered_map<std::string, int> errors;
 	std::multiset<std::pair<int, std::string>> DllErrors;
@@ -133,7 +143,10 @@ void Kern(SYSTEMTIME* systemTime) {
 /*
 further improvements to this function would be to add more instructions to the vector but dynamically.
 */
+struct x86_newInstructionSet;
+
 struct SystemHardwareCheck{
+	
 std::string ProcessBrandInfomation() {
 	int cpuInfo[4];
 	__cpuid(cpuInfo, 0);
@@ -196,29 +209,29 @@ std::string ProcessBrandInfomation() {
 			Issues.ErrorOp(GetLastError());
 		}
 		else if (GB != (int)systemMemoryRam) {
+
 			if (GB - floor(GB) >= 0.5) {
-				Gb = ceil(GB);//ceiling
+				Gb = ceil(GB);
 			}
 			else {
-				Gb = floor(GB);//or the floor of the closest whole number if error on conversion
+				Gb = floor(GB);
 			}
 		}
-		if (is64arch == false) {
-			
-			
-			
+		if (is64arch == false) {							//illegal indirection issue due to the fact that the thread is not fully defined before the main thread continues
+			std::thread s = std::thread([=] {
+				x86_newInstructionSet* bit32 = new x86_newInstructionSet(); //compile time error	
+				for (auto& instr : bit32->x86_instructions) {
+					std::cout << "Instruction: ";
+					for (auto& opcode : instr) {
+						std::cout << std::hex << static_cast<int>(opcode) << " ";
+					}
+					std::cout << std::endl;
+				}
+				});
+			s.detach();//main thread now continues allowing for the thread to have a fully defined x86 struct as it points to the main threads instance of the struct
 		}
-					 //Still unfinhsed first draft\\
-					// RELATED TO x86 new instruction set
-					//Issues.ErrorOp(GetLastError());
-		 		  //			//
-	}//			 ||				||
-	//			 \/				\/
+	}
 };			
-
-//now the x64 instruction set after the 32 bit so if the arch is running as a 32bit then machine code instructions used will be 32bit 
-
-
 
 //x86 32 bit instruction set
 struct x86_newInstructionSet {
@@ -281,7 +294,7 @@ std::vector<std::pair<unsigned char, unsigned char>> InstructionCheck() {
 		std::vector<unsigned char> localInstruct(250);
 		std::vector<unsigned char> localInstructOne(250);
 		std::mt19937 Rand(std::random_device{}());
-		std::uniform_int_distribution<int> dist(0, 999); //0-999 instructions
+		std::uniform_int_distribution<int> dist(0, 999); //1000 instructions
 		for (unsigned char Instruction : BInstructions) {
 			int randomIndex = dist(Rand); // get a random index pos from 0 - 999
 			if (randomIndex < 500) {
