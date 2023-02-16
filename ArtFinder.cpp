@@ -8,6 +8,7 @@
 #include <functional>
 #include <random>
 #include <set>
+#include <intrin.h>
 struct KernIssues {
 	std::unordered_map<std::string, int> errors;
 	std::multiset<std::pair<int, std::string>> DllErrors;
@@ -132,6 +133,87 @@ void Kern(SYSTEMTIME* systemTime) {
 /*
 further improvements to this function would be to add more instructions to the vector but dynamically.
 */
+struct SystemHardwareCheck{
+std::string ProcessBrand() {
+	int cpuInfo[4];
+	__cpuid(cpuInfo, 0);
+
+	char processorBrand[0x40];
+	memset(processorBrand, 0, sizeof(processorBrand));
+
+	for (int i = 0; i < 3; ++i) {
+		__cpuid(cpuInfo, 0x80000002 + i);
+		memcpy(processorBrand + i * 16, cpuInfo, sizeof(cpuInfo));
+	}
+	processorBrand[0x3F] = '\0'; 
+
+	return processorBrand;
+}
+	bool Is64Bit() {
+#if defined(_WIN64)
+		return true;
+#elif defined(_WIN32)
+		BOOL f64 = FALSE;
+		return IsWow64Process(GetCurrentProcess(), &f64) && f64;
+#else
+		return false;
+#endif
+	}
+	long long int GetSystemMemory() {
+		MEMORYSTATUSEX memInfo{};
+		memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+		GlobalMemoryStatusEx(&memInfo);
+		return memInfo.ullTotalPhys;
+	}
+	std::string GetSystemName() {
+		//later functions for network 
+		char computerName[MAX_COMPUTERNAME_LENGTH + 1];
+		DWORD size = sizeof(computerName) / sizeof(computerName[0]);
+		GetComputerNameA(computerName, &size);
+		return computerName;
+	}
+	struct SystemInternalErrors {
+		std::function<void(int)> ErrorOp = [](int error) {
+			std::cerr << "Error: " << error << std::endl;
+		};
+	};
+	SystemHardwareCheck() {
+		std::string cpuBrand = ProcessBrand();
+		std::string systemName = GetSystemName();
+		long long int systemMemoryRam = GetSystemMemory();
+		bool is64arch = Is64Bit();
+		SystemInternalErrors Issues;
+		if (cpuBrand.empty()) {
+			Issues.ErrorOp(GetLastError());
+		}
+		if (systemName.empty()) {
+			Issues.ErrorOp(GetLastError());
+		}
+		float GB = systemMemoryRam / static_cast<float>(1024) * 1024 * 1024;
+		int Gb = GB;
+		if (systemMemoryRam == 0) {
+			Issues.ErrorOp(GetLastError());
+		}
+		else if (GB != (int)systemMemoryRam) {
+			if (GB - floor(GB) >= 0.5) {
+				Gb = ceil(GB);//ceiling
+			}
+			else {
+				Gb = floor(GB);//or the floor of the closest whole number if error on conversion
+			}
+		}
+		if (is64arch == false) {
+
+		}
+			 //Still unfinhsed first draft\\
+			// RELATED TO x86 new instruction set
+			//Issues.ErrorOp(GetLastError());
+		 		//				//
+	}//			||				||
+	//			\/				\/
+};			
+
+
 struct x86_newInstructionSet {
 	std::vector<std::vector<unsigned char>> x86_instructions = {
 	{0x90}, {0xC3}, {0x89, 0xD8}, {0xFF, 0xE3}, {0x50}, {0x5B},
@@ -252,8 +334,9 @@ struct boolcheck {
 	}
 	*/
 };
+
 boolcheck* boolchecks = new boolcheck();
-void instructionSetCheck() {
+std::vector<unsigned char> instructionSetCheck() {
 	struct instructionMaker { //time complexity issue but its needed for now.
 								//*stackoverflow bug needing to fix that for anyexcessive duplicates.
 		unsigned char instructionA;
@@ -324,6 +407,7 @@ void instructionSetCheck() {
 			instructionC = *std::next(instructionCheck.begin(), 2);
 			instructionD = *std::next(instructionCheck.begin(), 3);
 			boolchecks->finished = true; //okay global is now confirmed to be true.
+
 		}
 	};
 }
@@ -350,4 +434,6 @@ int main() {
 /*
 TO DO MEMORY LEAKS.
 deconstruct unused data structs once they are no longer in use.
+
+global var clean up.
 */
