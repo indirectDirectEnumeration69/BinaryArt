@@ -2,7 +2,7 @@
 BinaryArt unfinished but working as intended building onto the binary instruction execution now.
 
 Priority:
-- Need to create functionality to determine architecture and the type of processor for the detrmination of binary encoding for each machine instruction.
+- Need to create functionality to determine sys architecture for the detrmination of binary encoding for each machine instruction based on if its x86 or x64 bit arch.
 
 
 
