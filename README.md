@@ -18,10 +18,17 @@ other efficeny ideas :
 
 
 suss prevention:
--
--
--
-
+- Resource use Obfuscation
+- signature swapping techniques
+- OS/IO Resource utilisation
+- Process upkeep ( managment of resources )
+- perma memory reference
+- perma reserve space
+- dynamic address swapping on memory location av scans. 
+- process hollowing 
+- non enviroment base foundation / parent , child nested within kernal.
+- neural botnet upkeep via client to network signal hibernated activation.
+- non relational activation of child processes. 
 
 Note:
 - once the logic is done the organisation of the code , modules and headers will start to come into play for a more efficent program , class's require alot of space so maybe keeping it procedural for now will keep the memory consumption low.
