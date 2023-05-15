@@ -33,4 +33,4 @@ additional features for a later date :
 
 - assembly execution async with other assembly instructions being created.
 
-- final goal in summary make it so this becomes self learning and fully dynamic through the use of a embedded nueral network for branches of dynamic actions based on previous factors taking into account then using other branches to form new connections for more sophiscticated logic and problem solving within the binary production as well as the overall program self discovering logic.
+- final goal in summary make it so this becomes self learning and fully dynamic through the use of a embedded neural network for branches of dynamic actions based on previous factors taking into account then using other branches to form new connections for more sophiscticated logic and problem solving within the binary production as well as the overall program self discovering logic.
