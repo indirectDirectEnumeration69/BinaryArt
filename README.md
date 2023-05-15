@@ -21,6 +21,8 @@ suss prevention:
 -
 -
 -
+
+
 Note:
 - once the logic is done the organisation of the code , modules and headers will start to come into play for a more efficent program , class's require alot of space so maybe keeping it procedural for now will keep the memory consumption low.
 
