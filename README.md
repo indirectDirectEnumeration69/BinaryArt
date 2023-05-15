@@ -17,7 +17,8 @@ other efficeny ideas :
 -
 
 
-suss prevention:
+(suss prevention:
+
 - Resource use Obfuscation
 - signature swapping techniques
 - OS/IO Resource utilisation
