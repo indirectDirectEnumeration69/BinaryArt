@@ -28,7 +28,7 @@ additional features for a later date :
 - finding os enviroments based on macro definition inclusions as well as certain files exisitig ie. dlls
 - making it so that the enviroment and debugging can be detected easily using enums for placeholder status representation.
 - checking for active and total cores and other virtualisation detection techniques.
-- make it so the binary instructions are seLf modifiable on runtime based on dynamic enviroment factors and action results .
+- make it so the binary instructions are self modifiable on runtime based on dynamic enviroment factors and action results .
 - implement ooperating sys fuzzing system for possible zero day discovery (will take alot of time)
 
 - assembly execution async with other assembly instructions being created.
