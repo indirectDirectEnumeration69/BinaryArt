@@ -13,9 +13,6 @@ well as including safe gaurds through atomic fences,gaurds and locks
 for the prevention of race conditions in certain situations then deal with resource efficency and process hogging(i.e allocate memory into other processes to run from.
 
 other efficeny ideas :
--
--
-
 
 (suss prevention:
 
